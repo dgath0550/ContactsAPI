@@ -105,7 +105,7 @@ namespace XUnitTestContactAPI
         // TEST NAME - updateEntry
         // TEST DESCRIPTION - Update Contact details
         [Theory]
-        [InlineData(32, "{\'id\':32,\'name\':{\'first\':\'Joe\',\'middle\':\'Francis\',\'last\':\'test\'},\'address\':{\'street\':\'8 High Summmer Row\',\'city\':\'Cannon\',\'state\':\'Delaware\',\'zip\':\'19797\'},\'phone\':[{\'number\':\'302-611-9148\',\'type\':\'home\'},{\'number\':\'347-532-9427\',\'type\':\'mobile\'}],\'email\':\'joe.test@yahoo.com\'}")]
+        [InlineData(34, "{\'id\':32,\'name\':{\'first\':\'Joe\',\'middle\':\'Francis\',\'last\':\'test\'},\'address\':{\'street\':\'8 High Summmer Row\',\'city\':\'Cannon\',\'state\':\'Delaware\',\'zip\':\'19797\'},\'phone\':[{\'number\':\'302-611-9148\',\'type\':\'home\'},{\'number\':\'347-532-9427\',\'type\':\'mobile\'}],\'email\':\'joe.test@yahoo.com\'}")]
         public async void UpdateContactTest(int id, string json)
         {
             var content = new StringContent(
@@ -121,7 +121,7 @@ namespace XUnitTestContactAPI
         // TEST NAME - deleteEntry
         // TEST DESCRIPTION - Delete a Contact by id
         [Theory]
-        [InlineData(32)]
+        [InlineData(34)]
         public async void DeleteContactTest(int id)
         {
             var response = await Client.DeleteAsync("/Contacts/" + id);
