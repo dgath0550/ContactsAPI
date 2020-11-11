@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ContactsAPI</name>
+    </assembly>
+    <members>
+        <member name="T:ContactsAPI.Controllers.ContactsController">
+            <summary>
+            Performs CRUD operations on contacts DB
+            </summary>
+        </member>
+        <member name="M:ContactsAPI.Controllers.ContactsController.#ctor(ContactsAPI.IRepository)">
+            <summary>
+            Injected Repository service
+            </summary>
+            <param name="_repository"></param>
+        </member>
+        <member name="M:ContactsAPI.Controllers.ContactsController.Get(System.Int32)">
+            <summary>
+            Get Contact
+            </summary>
+            <param name="id">Contact ID(0 to get all contacts)</param>
+            <returns>Single Contact JSON Object or all of Contacts if ID is equal to 0</returns>
+        </member>
+        <member name="M:ContactsAPI.Controllers.ContactsController.Add(ContactsAPI.Model.ContactJson)">
+            <summary>
+            Adds a new Contact
+            </summary>
+            <param name="contact">Contact JSON Object from request body</param>
+            <returns>HttpResponseMessage with custom status message</returns>
+        </member>
+        <member name="M:ContactsAPI.Controllers.ContactsController.Update(System.Int32,ContactsAPI.Model.ContactJson)">
+            <summary>
+            Updates a Contact
+            </summary>
+            <param name="id">Contact ID</param>
+            <param name="contact">Updated Contact JSON Object from request body</param>
+            <returns>Status of the update operation</returns>
+        </member>
+        <member name="M:ContactsAPI.Controllers.ContactsController.Delete(System.Int32)">
+            <summary>
+            Deletes a Contact based on ID
+            </summary>
+            <param name="id">Contact ID</param>
+            <returns>Status of the delete operation</returns>
+        </member>
+        <member name="T:ContactsAPI.IRepository">
+            <summary>
+            IRepository interface
+            </summary>
+        </member>
+        <member name="M:ContactsAPI.IRepository.GetContact(System.Int64)">
+            <summary>
+            Gets contacts
+            </summary>
+            <returns>Gets contacts</returns>
+        </member>
+        <member name="M:ContactsAPI.IRepository.AddContact(ContactsAPI.Model.ContactJson)">
+            <summary>
+            Add new Contact to the database
+            </summary>
+            <param name="Contact">Contact to add</param>
+            <returns>Added Contact</returns>
+        </member>
+        <member name="M:ContactsAPI.IRepository.UpdateContact(System.Int64,ContactsAPI.Model.ContactJson)">
+            <summary>
+            Saves updated Contact
+            </summary>
+            <param name="id">ID to update</param>
+            <param name="Contact">User input Contact to save</param>
+            <returns>Saved Contact</returns>
+        </member>
+        <member name="M:ContactsAPI.IRepository.DeleteContact(System.Int64)">
+            <summary>
+            Deletes Contact by id
+            </summary>
+            <param name="Contact">Contact details</param>
+            <returns>Status of the delete request</returns>
+        </member>
+        <member name="T:ContactsAPI.Repository">
+            <summary>
+            Inherits IRepository interface
+            </summary>
+        </member>
+        <member name="M:ContactsAPI.Repository.GetContact(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:ContactsAPI.Repository.AddContact(ContactsAPI.Model.ContactJson)">
+            <inheritdoc />
+        </member>
+        <member name="M:ContactsAPI.Repository.UpdateContact(System.Int64,ContactsAPI.Model.ContactJson)">
+            <inheritdoc />
+        </member>
+        <member name="M:ContactsAPI.Repository.DeleteContact(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:ContactsAPI.Repository.GetLastContactId">
+            <inheritdoc/>
+        </member>
+        <member name="T:ContactsAPI.Model.Contact">
+            <summary>
+            Internal generated Entity Contact definitions with system ID's
+            </summary>
+        </member>
+        <member name="M:ContactsAPI.Model.Contact.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:ContactsAPI.Model.Contact.#ctor(System.Int64,System.Int64,System.String)">
+            <summary>
+            Custom constructor
+            </summary>
+            <param name="iName"></param>
+            <param name="iAddress"></param>
+            <param name="email"></param>
+        </member>
+        <member name="T:ContactsAPI.Model.ContactJson">
+            <summary>
+            External JSON input/output.
+            Example: [{\"id\":0,\"name\":{\"first\":\"Harold\",\"middle\":\"Francis\",\"last\":\"Gilkeys\"},\"address\":{\"street\":\"8 High Autumn Row\",\"city\":\"Cannon\",\"state\":\"Delaware\",\"zip\":\"19797\"},\"phone\":[{\"number\":\"929-532-9427\",\"type\":\"mobile\"},{\"number\":\"347-611-9148\",\"type\":\"home\"}],\"email\":\"harold.gilkeys@yahoo.com\"}]
+            </summary>
+        </member>
+    </members>
+</doc>
