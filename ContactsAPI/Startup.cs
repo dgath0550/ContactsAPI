@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
 using Swashbuckle.Swagger;
 using System;
 using System.IO;
@@ -15,7 +16,7 @@ namespace ContactsAPI
 {
     public class Startup
     {
-
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,6 +27,19 @@ namespace ContactsAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #warning Set Up Origin variable for your local environment to prevent CORS errors on the UI site.
+            //Add allowed domains, Methods and Headers to avoid CORS errors
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:57273", Environment.GetEnvironmentVariable("Origin"))   
+                                      .WithMethods("PUT", "DELETE", "GET", "POST")
+                                      .WithHeaders(HeaderNames.ContentType);
+                                  });
+            });
+
             Action<Globals> Globals = (g =>
             {
                 g.ConnectionString = Configuration.GetConnectionString("sqliteconn");
@@ -58,6 +72,8 @@ namespace ContactsAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(MyAllowSpecificOrigins);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -66,7 +82,6 @@ namespace ContactsAPI
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
-
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
@@ -74,7 +89,6 @@ namespace ContactsAPI
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ContacsAPI V1");
                // c.RoutePrefix = string.Empty;
             });
-
 
             // app.UseHttpsRedirection();
 

@@ -1,0 +1,359 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <script src="Scripts/jquery-3.3.1.min.js"></script>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/Contacts.css" rel="stylesheet" />
+    <script src="Scripts/Autocomplete.js"></script>
+    <title>Contacts UI</title>
+</head>
+<body>
+    <h1>Contacts API Call Using jQuery AJAX</h1>
+    <h3>See documentation <a href="https://github.com/dgath0550/ContactsAPI/" target="_blank">GitHub</a></h3>
+    <div class="container">
+        <div id="content">
+            <div id="viewContent">
+                <h4>Search for contact</h4>
+                <div class="autocomplete" style="width:300px;">
+                    <input id="contactsrch" type="text" name="contactsrch" placeholder="Contact" autocomplete="off">
+                </div>
+                <a href="#" onclick="ResetView();">Reset </a>
+                <label id="message" style="color:red"></label>
+                <div id="actions"><a href="#" onclick="onContactClick(0);">Add a Contact</a></div>
+                <br />
+                <div class="textAlignCenter">
+                    <img src="Content/loading.gif" />
+                </div>
+                <div id="grid"></div>
+            </div>
+        </div>
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Contact Details</h2>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="id" />
+                    <div class="form-group form-border">
+                        <h4>Name</h4>
+                        <span>
+                            <label>First:</label>
+                            <input type="text" id="first">
+                        </span>
+                        <span>
+                            <label>Middle:</label> 
+                            <input type="text" id="middle">
+                        </span>
+                        <span>
+                            <label>Last:</label>
+                            <input type="text" id="last">
+                        </span><br />
+                    </div>
+                    <div class="form-group form-border">
+                        <h4>Address</h4>
+                        <span>
+                            <label>Street</label>
+                            <input type="text" id="street">
+                        </span>
+                        <span>
+                            <label>City:</label>
+                            <input type="text" id="city">
+                        </span><br />
+                        <span>
+                            <label>State:</label>
+                            <input type="text" id="state">
+                        </span>
+                        <span>
+                            <label>Zip:</label>
+                            <input type="text" id="zip">
+                        </span><br />
+                    </div>
+                    <div class="form-group form-border">
+                        <h4>Phone</h4>
+                        <span>
+                            <label>Home:</label>
+                            <input type="text" id="home">
+                        </span>
+                        <span>
+                            <label>Work:</label>
+                            <input type="text" id="work">
+                        </span>
+                        <span>
+                            <label>Mobile:</label>
+                            <input type="text" id="mobile">
+                        </span><br />
+                    </div>
+                    <div class="form-group form-border">
+                        <h4>Email</h4>
+                        <span>
+                            <label>Email:</label>
+                            <input type="text" id="email">
+                        </span><br />
+                    </div>
+                    <input type="submit" value="Submit" onclick="onContactSave();">
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        let namearray = [];          //Array to store autocomplete data based only on first name
+        var currentdata;
+        $(document).ready(function () {
+
+            // Get Contacts from server
+            GetContacts().then((data) => { currentdata  = data });
+            
+            // Initialize autocomplete control with first Name array
+            autocomplete(document.getElementById("contactsrch"), namearray);
+
+            $(document).ajaxStart(function () {
+                $("img").show();
+            });
+
+            $(document).ajaxStop(function () {
+                $("img").hide();
+            });
+        });
+
+        // Filters Grid based on Autocomplete selection
+        function onAutoCompleteSelection(selectedvalue) {
+            var first = selectedvalue;
+            var tempdata = currentdata.filter(c => c.name.first === first);
+            UpdateGrid(tempdata);
+        }
+
+        // Resets autocomplete and updates grid content to its original state 
+        function ResetView() {
+            UpdateGrid(currentdata);
+            $("#contactsrch").val("");
+        }
+
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Initiates form fields and opens the form as a modal view
+        function onContactClick(id) {
+            var contact;
+            clearform();
+            $("#id").val(id);
+            if (id > 0) {
+                contact = currentdata.filter(c => c.id === id);
+                $("#first").val(contact["0"].name.first);
+                $("#middle").val(contact["0"].name.middle);
+                $("#last").val(contact["0"].name.last);
+
+                $("#street").val(contact["0"].address.street);
+                $("#city").val(contact["0"].address.city);
+                $("#state").val(contact["0"].address.state);
+                $("#zip").val(contact["0"].address.zip);
+
+                var mobile = contact["0"].phone.filter(p => p.type === "mobile")[0];
+                if (typeof mobile !== "undefined") 
+                    $("#mobile").val(mobile.number);
+                
+                var home = contact["0"].phone.filter(p => p.type === "home")[0];
+                if (typeof home !== "undefined")
+                    $("#home").val(home.number);
+
+                var work = contact["0"].phone.filter(p => p.type === "work")[0];
+                if (typeof work !== "undefined")
+                    $("#work").val(work.number);
+
+                $("#email").val(contact["0"].email);
+            }
+
+            // Get the modal
+            var modal = document.getElementById("myModal");
+
+            // Open Modal
+            modal.style.display = "block";
+        }
+
+        // Clears form values
+        function clearform() {
+
+            $("#first").val('');
+            $("#middle").val('');
+            $("#last").val('');
+
+            $("#street").val('');
+            $("#city").val('');
+            $("#state").val('');
+            $("#zip").val('');
+
+            $("#mobile").val('');
+            $("#home").val('');
+            $("#work").val('');
+
+            $("#email").val('');
+        }
+
+        // Gets form field values and returns the as a JSON Object
+        // TODO: Add validation for each input
+        function getContactFormData() {
+            //Build Phone Node
+            var phonelist = [];
+
+            if ($("#home").val() != "")
+                phonelist.push({ "iPhone": 0, "number": $("#home").val(), "type": "home", "contactId": 0});
+
+            if ($("#work").val() != "")
+                phonelist.push({ "iPhone": 0, "number": $("#work").val(), "type": "work", "contactId": 0});
+
+            if ($("#mobile").val() != "")
+                phonelist.push({ "iPhone": 0, "number": $("#mobile").val(), "type": "mobile", "contactId": 0});
+
+            var contact =
+            {
+                  "id": 0,
+                    "name": {
+                      "iName" : 0,
+                      "first": $("#first").val(),
+                      "middle": $("#middle").val(),
+                      "last": $("#last").val()
+                    },
+                    "address": {
+                        "iAddress": 0,
+                        "street": $("#street").val(),
+                        "city": $("#city").val(),
+                        "state": $("#state").val(),
+                        "zip": $("#zip").val()
+                    },
+                    "phone": phonelist,
+                    "email": $("#email").val()
+            }
+                
+            return contact;
+        }
+
+        // Gets All contacts and updates the grid
+        async function GetContacts() {
+            //Update Grid Data from server
+            var data = await getReponse('http://localhost:5000/Contacts/0', 'GET', null);
+            console.log(data);
+            //Build and Render table
+            UpdateGrid(data);
+            return data;
+        }
+
+        // Add/Edit contact 
+        async function onContactSave() {           
+            var formdata = getContactFormData();
+            var id = $("#id").val();
+            var response;
+            if (id > 0) {
+              response = await getReponse('http://localhost:5000/Contacts/' + id, 'PUT', formdata);
+            }
+            else
+              response = await getReponse('http://localhost:5000/Contacts', 'POST', formdata);
+
+            //Update contacts from server
+            GetContacts().then((data) => { currentdata = data });
+
+            console.log(response);
+        }
+
+        // Deletes contacts
+        async function onContactDelete(id) {
+            var response = await getReponse('http://localhost:5000/Contacts/' + id, 'DELETE', null);
+
+            //Update contacts from server
+            GetContacts().then((data) => { currentdata = data });;
+
+            console.log(response);
+        }
+
+        // Makes an AJAX request and returns results from the API
+        async function getReponse(url, requesttype, obj) {
+            //Close modal
+            modal.style.display = "none";
+
+            let result;
+            try
+            {
+                result = $.ajax({
+                type: requesttype,
+                url: url,
+                data: JSON.stringify(obj),
+                contentType: "application/json",
+                //dataType: "json",
+                    error: function (xhr, status, error) {
+                        console.log("AJAX Error: " + status + "Request Type:" + requesttype + " URL: " + url + error)
+                        console.log(obj);
+                        console.log(xhr);
+                        switch (requesttype) {
+                            case "GET":
+                                console.log("Check the host and origin on the environment for possible CORS errors.");
+                                $("#message").text("Error getting Contacts from API. See console for more details");
+                                break;
+                            case "POST":
+                                $("#message").text("Error adding Contact from API. See console for more details");
+                                break;
+                            case "PUT":
+                                $("#message").text("Error editing Contact from API. See console for more details");
+                                break;
+                            case "POST":
+                                $("#message").text("Error deleting Contact from API. See console for more details");
+                                break;
+                        }
+                    }
+                });
+                return result;
+            }
+            catch (error) {
+                alert(error);
+                console.error(error);
+            }
+        }
+
+        // Generates grid html by appending the markup when called
+        // TODO: check for sanitized html
+        function UpdateGrid(data) {
+            var phonelist;
+            namearray.length = 0;
+            var table = $("<table><tr><th>Action</th><th>Contact</th><th>Address</th><th>Phone</th><th>Email</th></tr>");
+            for (var i = 0; i < data.length; i++) {
+                var row = $("<tr><td><a href='#' onclick='onContactClick(" + data[i].id + ");'>Edit</a> | <a href='#' onclick='onContactDelete(" + data[i].id + ");'>Delete</a></td>");
+
+                namearray.push(data[i].name["first"]);
+                row.append("<td>" + data[i].name["first"] + " " + data[i].name["middle"] + " " + data[i].name["last"] + "</td>");
+                row.append("<td>" + data[i].address["street"] + ", " + data[i].address["city"] + ", " + data[i].address["state"] + ", " + data[i].address["zip"] + "</td>");
+
+                phonelist = "";
+                for (var p = 0; p < data[i].phone.length; p++) {
+                    phonelist += data[i].phone[p]["type"] + ": " + data[i].phone[p]["number"] + "<br>";
+                }
+
+                row.append("<td>" + phonelist + "</td>");
+                row.append("<td>" + data[i]["email"] + "</td></tr>");
+                table.append(row);
+            }
+            table.append("</table>");
+            $("#grid").html(table);
+        }
+    </script>
+
+</body>
+</html>

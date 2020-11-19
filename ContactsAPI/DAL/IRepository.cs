@@ -37,14 +37,7 @@ namespace ContactsAPI
         /// <summary>
         /// Deletes Contact by id
         /// </summary>
-        /// <param name="Contact">Contact details</param>
         /// <returns>Status of the delete request</returns>
         Task<string> DeleteContact(long id);
-
-        /// <summary>
-        /// Gets last id from contact table
-        /// </summary>
-        /// <returns></returns>
-        ///long GetLastContactId();
     }
 }
