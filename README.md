@@ -61,4 +61,10 @@ This design could be improved by denormilizing it to make CRUD operations more s
 
 ## Architecture:                               
 Contacts DB API endpoints perform CRUD operations to manage Contacts using SQLITE and entity framework.
+
+## Testing
+XUnit tests attached
+
+## Documentation
+Swagger documentation avialable at http://localhost:5000/swagger/index.html (Default endpoint)
                                                                                      
