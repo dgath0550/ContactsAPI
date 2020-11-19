@@ -67,4 +67,24 @@ XUnit tests attached
 
 ## Documentation
 Swagger documentation avialable at http://localhost:5000/swagger/index.html (Default endpoint)
+
+## Server
+Uses Kestrel and runs on localhost:5000
+
+## Contacts UI
+Separate user interface site built with JQUERY AJAX to use the API
+Contact.html acts as a single page application that performs CRUD operations using a grid
+Uses JQUERY, CSS, Bootstrap only
+Requires Contact API siteto be running on localhost:5000
+
+## Instructions on how to run it
+1)Open solution with Visual Studio
+
+2)Make sure Origin Environment variable is correctly set up for the environment to prevent CORS errors
+
+3)Right click on contacts.html on the Contacts UI site and select "View on Browser" context menu option
+
+![ViewScrennshot](ViewinBrowser.png)
+
+
                                                                                      
