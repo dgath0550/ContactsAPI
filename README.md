@@ -76,6 +76,7 @@ Separate user interface site built with JQUERY AJAX to use the API
 Contact.html acts as a single page application that performs CRUD operations using a grid
 Uses JQUERY, CSS, Bootstrap only
 Requires Contact API siteto be running on localhost:5000
+![](View.png)
 
 ## Instructions on how to run it
 1)Open solution with Visual Studio
@@ -86,4 +87,22 @@ Requires Contact API siteto be running on localhost:5000
 
 ![](ViewInBrowser.png)
 
+## Filter Contacts using Autocomplete
+You can search for contacts by first name and filter the grid when a selection is made
+![](filtercontacts.png)
+
+##  Add contact
+You can add a contact by clicking on "Add Contact".
+This will open a modal pop-up with the form fields
+Once fields are entered, click submit to save the new contact
+
+##  Edit contact
+You can edit a contact by clicking the "Edit" link on the Actions Grid Column.
+This will open a modal pop-up with the form fields and existing values.
+Once fields are updated, click submit to update the contact.
+![](editcontact.png)
+
+##  Delete contact
+You can delete a contact by clicking the "Delete" link on the Actions Grid Column.
+This will send a request to the API to delete the contact on the server.
                                                                                   
