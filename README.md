@@ -100,7 +100,7 @@ Once fields are entered, click submit to save the new contact
 You can edit a contact by clicking the "Edit" link on the Actions Grid Column.
 This will open a modal pop-up with the form fields and existing values.
 Once fields are updated, click submit to update the contact.
-![](editcontact.png)
+![](editcontacts.png)
 
 ##  Delete contact
 You can delete a contact by clicking the "Delete" link on the Actions Grid Column.
@@ -108,4 +108,4 @@ This will send a request to the API to delete the contact on the server.
                                                                                   
 ## Troubleshooting tips
 See error message on the right side and console messages for more details
-![](onerror.png)
+![](error.png)
