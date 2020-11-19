@@ -84,7 +84,6 @@ Requires Contact API siteto be running on localhost:5000
 
 3)Right click on contacts.html on the Contacts UI site and select "View on Browser" context menu option
 
-![ViewScrennshot](ViewinBrowser.png)
+![](ViewInBrowser.png)
 
-
-                                                                                     
+                                                                                  
