@@ -89,7 +89,7 @@ Requires Contact API siteto be running on localhost:5000
 
 ## Filter Contacts using Autocomplete
 You can search for contacts by first name and filter the grid when a selection is made
-![](filtercontacts.png)
+![](filtercontact.png)
 
 ##  Add contact
 You can add a contact by clicking on "Add Contact".
@@ -106,3 +106,6 @@ Once fields are updated, click submit to update the contact.
 You can delete a contact by clicking the "Delete" link on the Actions Grid Column.
 This will send a request to the API to delete the contact on the server.
                                                                                   
+## Troubleshooting tips
+See error message on the right side and console messages for more details
+![](onerror.png)
